@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lec.spring.repository.PostRepository">
+
+    <insert id="save" flushCache="true"
+            parameterType="com.lec.spring.domain.Post"
+            useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        INSERT INTO t4_post
+            (subject, content, user)
+            VALUES
+            (#{subject}, #{content}, #{user})
+    </insert>
+
+    <update id="incViewCnt" flushCache="true">
+        UPDATE t4_post
+        SET viewcnt = viewcnt + 1
+        WHERE id = #{id}
+    </update>
+
+    <!-- 반복해서 사용될 쿼리문은 sql 태그로 정의 하고, include 태그로 가져다 쓸수 있다 -->
+    <sql id="SELECT_BASE">
+        SELECT
+            id,
+            subject,
+            content,
+            viewcnt "viewCnt",
+            user,
+            regdate "regDate"
+        FROM
+            t4_post
+        WHERE
+            1 = 1
+    </sql>
+
+    <select id="findAll" resultType="com.lec.spring.domain.Post">
+        <include refid="SELECT_BASE"/>
+        ORDER BY id DESC
+    </select>
+
+    <select id="findById" resultType="com.lec.spring.domain.Post">
+        <include refid="SELECT_BASE"/>
+        AND id = #{id}
+    </select>
+
+    <update id="update" flushCache="true"
+            parameterType="com.lec.spring.domain.Post">
+        UPDATE t4_post
+        SET subject=#{subject}, content=#{content}
+        WHERE id=#{id}
+    </update>
+
+    <delete id="delete" flushCache="true"
+            parameterType="com.lec.spring.domain.Post">
+        DELETE FROM t4_post WHERE id = #{id}
+    </delete>
+
+</mapper>

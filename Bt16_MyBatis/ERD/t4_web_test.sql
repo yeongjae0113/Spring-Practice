@@ -1,0 +1,1 @@
+SELECT * FROM t4_post ORDER BY id DESC;

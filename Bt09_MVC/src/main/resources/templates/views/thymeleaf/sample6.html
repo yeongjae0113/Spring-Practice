@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        table, th, td {
+            border : 1px solid black;
+            border-collapse: collapse;
+        }
+        table {width: 100%;}
+    </style>
+</head>
+<body>
+<h1>/sample6</h1>
+
+<h3>#temporals : java.time.* 객체</h3>
+    <div th:text="${now1}"></div>
+    <div th:text="${#temporals.format(now1)}"></div>
+    <div th:text="${#temporals.format(now1, 'yyyy-MM-dd HH:mm:ss')}"></div>
+
+    <div th:text="${#temporals.createNow()}"></div>
+
+<hr>
+
+    <div th:text="${price}"></div>
+    <div th:text="${#numbers.formatInteger(price, 3, 'COMMA')}"></div>
+  <div th:with="priceValie = 2099.87654">
+    <div th:text="${priceValie}"></div>
+    <div th:text="${#numbers.formatInteger(priceValue, 3, 'COMMA')}"></div>
+    <div th:text="${#numbers.formatDecimal(priceValue, 5, 10, 'POINT')}"></div>
+    <div th:text="${#numbers.formatDecimal(priceValue, 5, 2, 'POINT')}"></div>
+    <div th:text="${#numbers.formatDecimal(priceValue, 3, 'COMMA', 2, 'POINT')}"></div>
+  </div>
+
+<hr>
+
+  <div th:text="${title}"></div>
+  <div th:utext="${#strings.replace(title, 'sample', '<u>SPARTA!!</u>')}"></div>
+
+<ul>
+    <li th:each="str : ${#strings.listSplit(title, ' ')}" th:text="${str}"></li>
+</ul>
+
+<hr>
+<h3>#list</h3>
+<div th:text="${options}"></div>
+<div th:text="${#lists.size(options)}"></div>
+<div th:text="${#lists.isEmpty(options)}"></div>
+<div th:text="${#lists.contains(options, 'BBB')}"></div>
+  <div th:text="${#lists.sort(options)}"></div> <!-- 오름차순 정렬된 결과 리턴 -->
+  <div th:text="${options}"></div>              <!-- 원본의 변화는 없다 -->
+<!--  <div th:text=""></div>-->
+<!--  <div th:text=""></div>-->
+<!--  <div th:text=""></div>-->
+<!--  <div th:text=""></div>-->
+<!--  <div th:text=""></div>-->
+<!--  <div th:text=""></div>-->
+</body>
+</html>

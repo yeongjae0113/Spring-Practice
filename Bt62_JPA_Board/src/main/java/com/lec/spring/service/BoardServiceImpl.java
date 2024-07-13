@@ -52,7 +52,7 @@ public class BoardServiceImpl implements BoardService {
 
             // 성공하면 DB 에도 저장
             if(file != null){
-                file.setPost_id(id);  // FK 설정
+//                file.setPost_id(id);  // FK 설정
                 //attachmentRepository.save(file);  // INSERT
                 // TODO
             }

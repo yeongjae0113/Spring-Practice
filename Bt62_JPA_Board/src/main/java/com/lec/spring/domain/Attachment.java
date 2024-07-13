@@ -1,18 +1,21 @@
 package com.lec.spring.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Entity
 public class Attachment {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long post_id;  // 어느글의 첨부파일? (FK)
+
+    @ManyToOne
+    private Post post;  // 어느글의 첨부파일? (FK)
 
     private String sourcename;   // 원본 파일명
     private String filename;  // 저장된 파일명 (rename 된 파일명)

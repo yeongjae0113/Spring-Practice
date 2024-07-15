@@ -25,6 +25,25 @@ public class Post {
     @Transient
     private User user;             // 글 작성자 (FK)
 
+    // Post : User = N : 1
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    @ToString.Exclude
+    private User users;
+
+    // Post : Comment = 1 : N
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "post_id")
+    @ToString.Exclude
+    private List<Comment> comments = new ArrayList<>();
+
+    // Post : Attachment = 1 : N
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "post_id")
+    @ToString.Exclude
+    private List<Attachment> attachments = new ArrayList<>();
+
+
     // 첨부파일
     @ToString.Exclude
     @Builder.Default   // builder 제공안함

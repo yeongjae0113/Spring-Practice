@@ -1,13 +1,10 @@
 package com.lec.spring.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import  jakarta.persistence.*;
+import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -21,4 +18,10 @@ public class Authority {
     private Long id;  // PK
 
     private String name;   // 권한명  ex) "ROLE_MEMBER", "ROLE_ADMIN"
+
+    // Authority : User = N : M
+//    @ManyToMany
+//    @JoinColumn(name = "authority_id")
+//    @ToString.Exclude
+//    private List<User> users = new ArrayList<>();
 }

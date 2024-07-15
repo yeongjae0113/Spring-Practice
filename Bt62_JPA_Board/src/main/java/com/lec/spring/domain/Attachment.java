@@ -22,4 +22,10 @@ public class Attachment {
 
     private boolean isImage;   // 이미지 여부
 
+
+    // Attachment : Post = N : 1
+    @ManyToOne
+    @JoinColumn(name = "post_id")
+    @ToString.Exclude
+    private Post posts;
 }

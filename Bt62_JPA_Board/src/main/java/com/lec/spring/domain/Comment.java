@@ -11,6 +11,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -31,6 +33,20 @@ public class Comment {
     private Long post_id;       // 어느글의 댓글 (FK)
 
     private String content;     // 댓글 내용
+
+
+    // Comment : User = N : 1
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @ToString.Exclude
+    private User users;
+
+    // Comment : Post = N : 1
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @ToString.Exclude
+    private Post posts;
+
 
     // java.time.* 객체 변환을 위한 annotation
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)

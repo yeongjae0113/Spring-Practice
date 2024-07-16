@@ -2,6 +2,8 @@ package com.lec.spring.service;
 
 import com.lec.spring.domain.Authority;
 import com.lec.spring.domain.User;
+import com.lec.spring.repository.AuthorityRepository;
+import com.lec.spring.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,8 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+    private UserRepository userRepository;
+    private AuthorityRepository authorityRepository;
 
 
     @Override

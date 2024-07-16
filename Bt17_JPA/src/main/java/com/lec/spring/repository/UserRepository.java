@@ -157,4 +157,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Map<String, Object> findRowRecord();
     // key 값 = String, value = Object => 하나의 행이 Map 으로 담겨옴. (여러개가 있기 때문에 List 로 -> 썻다가 지웠음)
 
+
+    // Embed
+    // 두개의 Address 값에 null 이나 empty 가 저장되면 DB 에는 무엇이 저장되어 있을까?
+    @Query(value = "SELECT * FROM t_user", nativeQuery = true)
+    List<Map<String, Object>> findAllRowRecord();
+
 }

@@ -7,11 +7,14 @@ import jakarta.persistence.Tuple;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 public interface BookRepository extends JpaRepository<Book, Long> {    // 1번 째 파라미터는 Entity 타입 (Book), 2번째 파라미터는 id 의 타입 (Long)
     // 다음과 같은 쿼리 메소드를 만들어 보자
@@ -24,9 +27,10 @@ public interface BookRepository extends JpaRepository<Book, Long> {    // 1번 �
 
     // Positional Parameter 사용
     @Query(value = """
-        select b from Book b
-        where name = ?1 and createdAt >= ?2 and updatedAt >= ?3 and category is null 
-        """)    // ?1 ?2 ?3 ?4 ... => Positional Parameter ===> name = ?1, createdAt = ?2, updateAt = ?3
+            select b from Book b
+            where name = ?1 and createdAt >= ?2 and updatedAt >= ?3 and category is null 
+            """)
+    // ?1 ?2 ?3 ?4 ... => Positional Parameter ===> name = ?1, createdAt = ?2, updateAt = ?3
     List<Book> findByNameRecently(String name,
                                   LocalDateTime createdAt,
                                   LocalDateTime updatedAt
@@ -34,9 +38,9 @@ public interface BookRepository extends JpaRepository<Book, Long> {    // 1번 �
 
     // Named Parameter 사용
     @Query(value = """
-        select b from Book b
-        where name = :name and createdAt >= :createdAt and updatedAt >= :updatedAt and category is null 
-        """)
+            select b from Book b
+            where name = :name and createdAt >= :createdAt and updatedAt >= :updatedAt and category is null 
+            """)
     List<Book> findByNameRecently2(
             @Param("name") String name,     // :name 에 대입
             @Param("createdAt") LocalDateTime createdAt,    // :createdAt 에 대입
@@ -44,8 +48,8 @@ public interface BookRepository extends JpaRepository<Book, Long> {    // 1번 �
     );
 
     @Query(value = """
-        select b.name as name, b.category as category from Book b
-        """)
+            select b.name as name, b.category as category from Book b
+            """)
     List<Tuple> findBookNameAndCategory1();
 
 
@@ -53,19 +57,39 @@ public interface BookRepository extends JpaRepository<Book, Long> {    // 1번 �
     List<BookNameAndCategory1> findBookNameAndCategory2();
 
     @Query(value = """
-        select
-            new com.lec.spring.repository.dto.BookNameAndCategory2(b.name, b.category)
-        from Book b
-        """)
+            select
+                new com.lec.spring.repository.dto.BookNameAndCategory2(b.name, b.category)
+            from Book b
+            """)
     List<BookNameAndCategory2> findBookNameAndCategory3();
 
 
     @Query(value = """
-        select
-            new com.lec.spring.repository.dto.BookNameAndCategory2(b.name, b.category)
-        from Book b
-        """)
+            select
+                new com.lec.spring.repository.dto.BookNameAndCategory2(b.name, b.category)
+            from Book b
+            """)
     Page<BookNameAndCategory2> findBookNameAndCategory4(Pageable pageable);
 
 
+    // Native Query
+    @Query(value = "select * from book", nativeQuery = true)
+    List<Book> findAllCustom1();
+
+    @Transactional    // update / delete / insert 수행하는 native query 에 필요!
+    @Modifying
+    @Query(value = "update book set category = 'IT전문서'", nativeQuery = true)
+    int updateCategories();
+    // DML 의 경우 리턴타입이 void, int, long 일수 있다.
+    // int 나 long 리턴하게 되면 affected row 를 받게 된다.
+
+    // native query 로 JPA 에 없는 쿼리 하기
+    @Query(value = "show tables", nativeQuery = true)
+    List<String> showTables();
+
+    // Converter
+    // 실제 변환되어 저장되는 status 값 확인을 위한 native query 생성
+    // 가장 마지막에 저장된 book 정보만 읽어오기
+    @Query(value = "select * from book order by id desc limit 1", nativeQuery = true)
+    Map<String, Object> findRowRecord();
 }

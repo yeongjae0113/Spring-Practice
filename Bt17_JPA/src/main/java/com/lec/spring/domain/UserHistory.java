@@ -39,4 +39,29 @@ public class UserHistory extends BaseEntity {
 //    private LocalDateTime createdAt;
 //    @LastModifiedDate
 //    private LocalDateTime updatedAt;
+
+//    // User 가 업데이트 될 때 마다 UserHistory 에도 업데이트 되기 때문에 UserHistory 에도 선언해줘야함.
+//    private String city;
+//    private String district;
+//    private String detail;
+//    private String zipCode;
+
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "city", column = @Column(name = "home_city")),
+            @AttributeOverride(name = "district", column = @Column(name = "home_distirct")),
+            @AttributeOverride(name = "detail", column = @Column(name = "home_address_detail")),
+            @AttributeOverride(name = "zipCode", column = @Column(name = "home_zip_code")),
+    })
+    private Address homeAddress;
+
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "city", column = @Column(name = "company_city")),
+            @AttributeOverride(name = "district", column = @Column(name = "company_distirct")),
+            @AttributeOverride(name = "detail", column = @Column(name = "company_address_detail")),
+            @AttributeOverride(name = "zipCode", column = @Column(name = "company_zip_code")),
+    })
+    private Address companyAddress;
+
 }

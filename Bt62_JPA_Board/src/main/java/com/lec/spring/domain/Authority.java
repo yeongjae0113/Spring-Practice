@@ -10,13 +10,14 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Entity
+@Entity(name = "t6_authority")
 public class Authority {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;  // PK
 
+    @Column(nullable = false)
     private String name;   // 권한명  ex) "ROLE_MEMBER", "ROLE_ADMIN"
 
     // Authority : User = N : M

@@ -37,7 +37,7 @@ public class Post extends BaseEntity {
     private Long viewCnt;          // 조회수
 
     // Post : User = N : 1
-    @ManyToOne(optional = false)   // null 일 수 없다. 반드시 존재해야함.
+    @ManyToOne(optional = false)   // null 일 수 없다. 반드시 존재해야함.   => ManyToOne 은 JoinColumn 을 굳이 안써도됌
     @ToString.Exclude       // toString 메소드에 포함하지 않는다.
     // optional = false : user_id bigint not null
     //  이게 없으면 Post 의 find..동작시  Post 와 User 사이에 left outer join 발생

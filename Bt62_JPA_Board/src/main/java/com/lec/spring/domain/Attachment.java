@@ -7,25 +7,15 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Entity
+@Entity(name = "t6_attachment")
 public class Attachment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    private Post post;  // 어느글의 첨부파일? (FK)
-
     private String sourcename;   // 원본 파일명
     private String filename;  // 저장된 파일명 (rename 된 파일명)
 
     private boolean isImage;   // 이미지 여부
-
-
-    // Attachment : Post = N : 1
-    @ManyToOne
-    @JoinColumn(name = "post_id")
-    @ToString.Exclude
-    private Post posts;
 }

@@ -2,7 +2,11 @@ package com.lec.spring.service;
 
 import com.lec.spring.domain.Attachment;
 import com.lec.spring.domain.Post;
+import com.lec.spring.repository.AttachmentRepository;
+import com.lec.spring.repository.PostRepository;
+import com.lec.spring.repository.UserRepository;
 import com.lec.spring.util.U;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -33,6 +37,24 @@ public class BoardServiceImpl implements BoardService {
     private int PAGE_ROWS;
 
 
+    private PostRepository postRepository;
+    private UserRepository userRepository;
+    private AttachmentRepository attachmentRepository;
+
+    @Autowired
+    public void setPostRepository(PostRepository postRepository) {
+        this.postRepository = postRepository;
+    }
+    @Autowired
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+    @Autowired
+    public void setAttachmentRepository(AttachmentRepository attachmentRepository) {
+        this.attachmentRepository = attachmentRepository;
+    }
+
+
     // 특정 글(id) 에 첨부파일(들) 추가
     private void addFiles(Map<String, MultipartFile> files, Long id) {
         if(files == null) return;
@@ -53,7 +75,7 @@ public class BoardServiceImpl implements BoardService {
             // 성공하면 DB 에도 저장
             if(file != null){
 //                file.setPost_id(id);  // FK 설정
-                //attachmentRepository.save(file);  // INSERT
+                attachmentRepository.save(file);  // INSERT
                 // TODO
             }
         }

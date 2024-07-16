@@ -18,15 +18,14 @@ public class Attachment {
     private Long id;
 
     @Column(name = "post_id")
-    private Long post;           // FK
+    private Long post;   // FK
 
     @Column(nullable = false)
     private String sourcename;   // 원본 파일명
-
     @Column(nullable = false)
-    private String filename;     // 저장된 파일명 (rename 된 파일명)
+    private String filename;  // 저장된 파일명 (rename 된 파일명)
 
-    @Transient      // Entity 에서 제외
-    private boolean isImage;     // 이미지 여부
+    @Transient
+    private boolean isImage;   // 이미지 여부
 
 }

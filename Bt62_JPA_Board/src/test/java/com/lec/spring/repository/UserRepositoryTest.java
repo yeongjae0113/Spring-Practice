@@ -28,7 +28,7 @@ class UserRepositoryTest {
                 .re_password("as00252")
                 .name("jackson")
                 .email("jack123@naver.com")
-                .regDate(LocalDateTime.now())
+//                .regDate(LocalDateTime.now())
                 .provider("local")
                 .providerId("1")
                 .build();

@@ -70,11 +70,11 @@ public class User extends BaseEntity {
     // User : UserHistory = 1 : N 관계
     @OneToMany(fetch = FetchType.EAGER)     // 자식의 Entity 와 부모의 Entity 도 같이 읽어오도록 쿼리 실행해주줌
     @JoinColumn(name = "user_id"            // Entity 가 어떤 컬럼으로 join 하게 될지 지정해준다.
-                // name = "user_id" : join 할 컬럼명 지정가능!
-                //        UserHistory 의 user_id 란 컬럼으로 join
+            // name = "user_id" : join 할 컬럼명 지정가능!
+            //        UserHistory 의 user_id 란 컬럼으로 join
 
             , insertable = false, updatable = false
-                // User 에서 userHistories 값을 추가, 수정하지 못하도록 하기위해 !
+            // User 에서 userHistories 값을 추가, 수정하지 못하도록 하기위해 !
     )
     @ToString.Exclude   // toString 제외
     private List<UserHistory> userHistories = new ArrayList<>();    // ArrayList<>() 를 써서 NullPointException 방지
@@ -84,7 +84,6 @@ public class User extends BaseEntity {
     @JoinColumn(name = "user_id")
     @ToString.Exclude
     private List<Review> reviews = new ArrayList<>();   // ArrayList<>() 를 써서 NullPointException 방지 => Review 가 없을 경우 List 로 초기화
-
 
 
 //    @PrePersist     // INSERT 직전 호출
@@ -118,5 +117,54 @@ public class User extends BaseEntity {
 //    public void postLoad() {
 //        System.out.println(">>> postLoad");
 //    }
+
+
+    // Embedded 예제
+    // Embed 없이 주소 다루기
+//    private String city;
+//    private String district;
+//    private String detail;
+//    private String zipCode;
+
+    @Embedded       // Embeddable 클래스 임을 명시
+    @AttributeOverrides({
+            @AttributeOverride(name = "city", column = @Column(name = "home_city")),
+            @AttributeOverride(name = "district", column = @Column(name = "home_distirct")),
+            @AttributeOverride(name = "detail", column = @Column(name = "home_address_detail")),
+            @AttributeOverride(name = "zipCode", column = @Column(name = "home_zip_code")),
+    })
+    private Address homeAddress;    // 기존의 address
+
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "city", column = @Column(name = "company_city")),
+            @AttributeOverride(name = "district", column = @Column(name = "company_distirct")),
+            @AttributeOverride(name = "detail", column = @Column(name = "company_address_detail")),
+            @AttributeOverride(name = "zipCode", column = @Column(name = "company_zip_code")),
+    })
+    private Address companyAddress; // 바꾼 address
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }

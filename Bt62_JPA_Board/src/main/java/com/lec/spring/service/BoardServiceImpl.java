@@ -2,6 +2,7 @@ package com.lec.spring.service;
 
 import com.lec.spring.domain.Attachment;
 import com.lec.spring.domain.Post;
+import com.lec.spring.domain.User;
 import com.lec.spring.repository.AttachmentRepository;
 import com.lec.spring.repository.PostRepository;
 import com.lec.spring.repository.UserRepository;
@@ -74,9 +75,8 @@ public class BoardServiceImpl implements BoardService {
 
             // 성공하면 DB 에도 저장
             if(file != null){
-//                file.setPost_id(id);  // FK 설정
+                file.setPost(id);  // FK 설정
                 attachmentRepository.save(file);  // INSERT
-                // TODO
             }
         }
     } // end addFiles()
@@ -122,9 +122,9 @@ public class BoardServiceImpl implements BoardService {
         System.out.println(copyOfLocation);
 
         try {
-            // inputStream을 가져와서
+            // inputStream 을 가져와서
             // copyOfLocation (저장위치)로 파일을 쓴다.
-            // copy의 옵션은 기존에 존재하면 REPLACE(대체한다), 오버라이딩 한다
+            // copy 의 옵션은 기존에 존재하면 REPLACE(대체한다), 오버라이딩 한다
 
             // java.nio.file.Files
             Files.copy(
@@ -187,7 +187,15 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public int write(Post post, Map<String, MultipartFile> files) {
-        return 0;
+        User user = U.getLoggedUser();
+
+        user = userRepository.findById(user.getId()).orElse(null);
+        post.setUser(user);
+
+        post = postRepository.saveAndFlush(post);
+
+        addFiles(files, post.getId());
+        return 1;
     }
 
     @Override
@@ -197,7 +205,7 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public List<Post> list() {
-        return null;
+        return postRepository.findAll();
     }
 
     @Override

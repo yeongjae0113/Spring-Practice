@@ -57,6 +57,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<Authority> selectAuthoritiesById(Long id) {
+        // id 로 사용자를 찾고 해당 사용자의 권한 목록을 반환하는 메소드
+        // 사용자 id 가 존재하지 않으면 빈 리스트로 반환.
+
         User user = userRepository.findById(id).orElse(null);
         if(user != null)
             return user.getAuthorities();
